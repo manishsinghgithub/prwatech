@@ -1,5 +1,6 @@
 package com.prwatech.user.service.impl;
 
+import static com.prwatech.common.Constants.EMAIL_REGEX;
 import static com.prwatech.common.Constants.FORGET_PASSWORD_MAIL_BODY;
 import static com.prwatech.common.Constants.FORGET_PASSWORD_MAIL_SUBJECT;
 import static com.prwatech.common.Constants.REFERAL_BIT_1;
@@ -43,6 +44,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
+
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -155,6 +158,11 @@ public class IamServiceImpl implements IamService {
 
   private SignInResponseDto signUpWithEmailAndPassword(
       SignInSignUpRequestDto signInSignUpRequestDto) {
+
+    if(!patternMatches(signInSignUpRequestDto.getEmail(), EMAIL_REGEX)){
+      throw new UnProcessableEntityException("In valid email address!");
+    }
+
     Optional<User> userObject =
         iamMongodbTemplateLayer.findByEmail(signInSignUpRequestDto.getEmail());
     if (userObject.isPresent() || !userObject.isEmpty()) {
@@ -617,5 +625,11 @@ public class IamServiceImpl implements IamService {
     signInResponseDto.setUserDetailsDto(userService.getUserDetailsById(user.getId()));
 
     return signInResponseDto;
+  }
+
+  private boolean patternMatches(String emailAddress, String regexPattern) {
+    return Pattern.compile(regexPattern)
+            .matcher(emailAddress)
+            .matches();
   }
 }

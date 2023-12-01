@@ -47,6 +47,7 @@ public class Constants {
   public static String REFERAL_BIT_1="KA";
   public static String REFERAL_BIT_2="PRTC";
   public static String NEW_USER_COUPON_ID="64f8c81101adc23e4d5953e1";
-
   public static Integer DEFAULT_REF_AMOUNT=500;
+  public static String EMAIL_REGEX="^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@\" \n" +
+          "        + \"[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$";
 }
